@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>$[BoothTitle]$</title>
+
+  <!--  
+    SPACE = Reflow Game
+    VERSION = 1.0
+    BUILD DATE = 
+    LAYOUT ID =  
+    PageID = 
+    ImageURL = https://content.inxpo.com/customvts/VXP/Shared/assets/SpaceThumbs/CustomThumb.jpg 
+  -->
+
+  <link rel="stylesheet" type="text/css" href="::{CSSDir}/master.css" />
+  <link rel="stylesheet" type="text/css" href="::{CSSDir}/ShareWidget.css" />
+  <link rel="stylesheet" href="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/css/Global.css" type="text/css">
+  <link rel="stylesheet" href="https://::{ContentServerAddress}/customvts/VXP/Reflow/Games/css/Games.css" type="text/css">
+  <link rel="stylesheet" href="Server.nxp?LASCmd=AI:4;F:APIUTILS!200&ShowKey=$[ShowKey]$" type="text/css">
+  <script language="JavaScript" type="text/javascript">
+    <!-- TabDisplayFormat=3 -->
+    // $$XPREditor$$: https://::{ContentServerAddress}/customvts/VXP/Reflow/Games/js/GamesEditor.js
+
+    //------- GLOBAL VARS -------------------
+    var NULL = null;
+    var g_oPageOptions = {}
+    $[ControlData]$
+    var g_iLocaleID = $[LocaleID]$;
+    var g_iBoothKey = $[BoothKey]$;
+    var g_iShowKey = $[ShowKey]$;
+    var g_iUserType = ::{ClientBrowser};
+    var g_iUserID = $[UserID]$;
+    var g_iUserKey = $[UserKey]$;
+    var g_iChatUserKey = $[ChatUserID]$;
+    var g_iBoothVisitKey = $[BoothVisitKey]$;
+    var g_iExhibitorKey = $[ExhibitorKey]$;
+    var g_iBoothVisitCount = $[BoothVisitCount]$;
+    var g_iRecipientKey = $[RecipientKey]$;
+    var g_iInstanceID = $[InstanceID]$;
+    var g_iPlayerTechnology = $[PlayerTechnology]$;
+    var g_cServerIPAddress = "$[ServerIPAddress]$";
+    var g_cContentServerAddress = "::{ContentServerAddress}";
+    var g_cEMailAddress = "$[EMailAddress]$";
+    var g_cVTSServer = "::{VTSServer}";
+    var g_cImageDir = "::{ImageDir}";
+    var g_cLASFileName = "::{LASFileName}";
+    var g_aPageURLS = new Array($[TabURLArray]$"Server.nxp?LASCmd=AI:$[InstanceID]$;O:BlankBooth.htm");
+    var g_oTabData = ["JSON14526&BoothKey=$[BoothKey]$"];
+  </script>
+  <script language="javascript" src="::{ScriptDir}/InxpoAJAX.js"></script>
+  <script language="javascript" src="::{ScriptDir}/XBrowser.js"></script>
+  <script language="javascript" src="::{ScriptDir}/VTS/ShowFunctions.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/js/language/Language$[LocaleID]$.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/js/Global.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/js/DomObject.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/js/ColorObject.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Global/js/VideoObject.js"></script>
+  <script language="javascript" src="https://::{ContentServerAddress}/customvts/VXP/Reflow/Games/js/GamesDisplay.js"></script>
+
+  <script language="JavaScript" type="text/javascript">
+    function window_onload() {
+      g_oGamesDisplay.init();
+    }
+  </script>
+</head>
+
+<body id="BodyTag" class="BoothKey$[BoothKey]$ Games loading hybrid" onLoad="window_onload()">
+  <div class="PageBackground"></div>
+  <div class="PageWrap">
+    <div class="PageImage StayOnScroll">
+      <div class="SingleImageContainer bgc-Secondary">
+        <img data-src="{ImageURL}" class="ItemImage">
+      </div>
+    </div>
+    <div class="PageContent Games">
+      <div id="listView" class="listView row">
+        <div class="game-section"></div>
+        <div id="leaderboardView" class="leaderboard-section"></div>
+      </div>
+      <div id="gameView" class="gameView row hide">
+        <div id="titleSection" class="title-section"></div>
+        <div id="playSection" class="play-section"></div>
+        <div class="leaderboard-section"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="Master_Node_List" style="display: none;">
+    <div id="MasterGameListNode" class="game" data-game-key="{GameKey}">
+      <div class="game-logo bgc-Primary">
+        <img data-src="{GameLogoImageURL}" alt="">
+      </div>
+      <div class="game-info">
+        <h2>{TabTitle}</h2>
+        <a class="play-btn bgc-Action1" data-text-lang="Play">PLAY</a>
+      </div>
+    </div>
+    <div id="MasterGameTitleNode" class="gameTitle row">
+      <div class="game-title-section game-title-view">
+        <div class="game-logo bgc-Primary">
+          <img data-src="{GameLogoImageURL}" alt="">
+        </div>
+      </div>
+      <div class="game-title tc-Text1">
+        <h1>{TabTitle}</h1>
+      </div>
+    </div>
+    <div id="GameMasterNodeWelcome" class="game-welcome bgc-Primary"><a id="startGame" class="play-btn play-btn-large bgc-Action1">PLAY</a></div>
+    <div id="GameMasterNodeComplete" class="game-welcome bgc-Primary">
+      <div class="game-complete">
+        <h1>Thanks for playing {Title}</h1>
+        <p>Final Score: {Score}</p>
+        <p>Correct Answers: {Correct}</p>
+        <p><a id="replayButton" class="replay-btn bgc-Action1">REPLAY</a> <a class="replay-btn back-to-list-btn">Back To List</a></p>
+      </div>
+    </div>
+
+    <div id="GameMasterNodeLeaderBoard">
+      <div class="bgc-Accent2 tc-Primary SectionTitle">{Title}</div>
+      <div class="leaderboard-me bgc-Primary">
+        <h4>MY SCORE: {Score}</h4>
+        <h4>MY RANK: {Rank}</h4>
+      </div>
+      <div class="leaderboard-list">
+        <div class="leaderboard-heading">
+          <p class="name">Name</p>
+          <p class="score">Score</p>
+          <p class="rank">Rank</p>
+        </div>
+        <div class="leaderboard-body"></div>
+      </div>
+    </div>
+    <div id="GameMasterNodeLeaderBoardRow" class="leaderboard-data-item">
+      <p class="name">{Name}</p>
+      <p class="score">{Score}</p>
+      <p class="rank">{Rank}</p>
+    </div>
+  </div>
+</body>
+
+</html>

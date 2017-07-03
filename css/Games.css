@@ -1,0 +1,503 @@
+/* PageContent General */
+.PageContent .NoResults{
+  display: none;
+}
+.PageContent.Empty{
+ 
+}
+.PageContent:after{
+  content: ".";
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  display: table;
+  overflow: hidden;
+}
+.PageContent .SectionTitle{
+  font-size: 21px;
+  padding: 18px 40px;
+  font-weight: 300;
+}
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  padding: .98rem;
+  justify-content: space-between;
+}
+.title-section{
+  width: 100%;
+}
+.game-section,
+.game-welcome,
+.play-section{
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+.game-welcome,
+.play-section{
+  display: flex;
+  justify-content: center;
+  min-height: 550px;
+}
+.listView .game-section{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.game-welcome{
+  position: relative;
+  background-repeat: no-repeat;
+}
+.leaderboard-section{
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+.row.gameTitle{
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 0 .98rem;
+}
+.game-title-section{
+  display: flex;
+}
+.game-title{
+  align-self: center;
+}
+.game-title-view{
+  margin-bottom: 1rem;
+  height: 125px;
+}
+.listView{
+}
+.game-info .play-btn
+{
+  padding: 0.7rem 2rem;
+  margin-top: auto;
+}
+
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  margin-bottom: .5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+h1{
+  font-size: 2.65rem;
+  font-weight: 300;
+  display: block;
+  padding: 2.3rem 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+h2{
+  font-size: 1.8rem;
+  color: #6b6b6b;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+h3{
+  font-size: 1.5rem;
+  color: #a5a5a5;
+  font-weight: 300;
+  margin-top: 0;
+}
+p{
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+a{
+  text-decoration: none;
+}
+.leaderboard-title h1{
+  color: #436d86;
+}
+.answers h3{
+  font-size: 2.3rem;
+  color: #636363;
+  margin-bottom: 1.9rem;
+  font-weight: 400;
+  line-height: 2.9rem;
+}
+.leaderboard-heading p{
+  margin-top: 0;
+  margin-bottom: .3rem;
+}
+.hide{
+  display: none;
+}
+.game{
+  margin-bottom: 2.9rem;
+  display: flex;
+}
+.game:last-child{
+  margin-bottom: 2.9rem;
+}
+.game .game-logo{
+  border: 1px solid #ccc;
+  max-height: 125px;
+  max-width: 300px;
+  position: relative;
+  flex: 0 0 100%;
+  margin: 0 1.5rem 0 0;  
+}
+.game img{
+  width: 100%;
+}
+.game-info{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+}
+.game-info h2{
+  align-items: center;
+  padding: 0;
+}
+.game-info h3{
+  flex: 1 auto;
+}
+.replay-btn{
+  padding: 1rem 2rem;
+  align-self: flex-start;
+  font-size: 1.2rem;
+}
+.play-btn{
+
+}
+.play-view-to-list{
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  margin-left: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+    
+.replay-btn{
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.play-btn,
+.play-btn-large{
+  color: #fff;
+  display: inline-block;
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 1.25rem;
+}
+.play-btn-large{
+  /*margin-top: 8%;*/
+  font-size: 2.4rem;
+  padding: 1.25rem 3.5rem;
+  align-self: center;
+}
+.play-btn:hover{
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Question */
+.score-container{
+  display: flex;
+  justify-content: space-between;
+  background: #24ad9e;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+.score-container h1{
+  color: #fff;
+  padding: 1rem;
+}
+.question-container{
+  background: #e8edf1;
+  border: 1px solid transparent;
+}
+.answers{
+  padding: 2.5rem 2.5rem 1.7rem;
+  position: relative;
+}
+.answer p{
+  background: #fafafa;
+  border-left: 7px solid #c4cfcf;
+  margin-bottom: .24rem;
+  padding: 2.5rem 1.65rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 0;
+  cursor: pointer;
+}
+.answer p.correct{
+  border-left: 7px solid #24ad9e;
+}
+.answer p.incorrect{
+  border-left: 7px solid #f05b5b;
+}
+.answer p:last-child{
+  margin-bottom: 0;
+}
+.current-q-index{
+  display: flex;
+  color: #b1b3b3;
+  margin-top: 3rem;
+}
+.current-q-index p{
+  font-size: 1.5rem;
+}
+.current-q{
+  position: absolute;
+  left: 45%;
+  bottom: 1.59rem;
+}
+.back-to-list{
+  flex: 0 0 45%;
+  cursor: pointer;
+}
+.back-to-list-btn{
+  margin-left: 0.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  color: #38729f;
+}
+.leaderboard-title{
+  background: #dae1e8;
+}
+.leaderboard-heading,
+.leaderboard-data-item{
+  display: flex;
+  justify-content: space-between;
+}
+.leaderboard-data-item{
+  margin-bottom: 1.5rem;
+}
+.leaderboard-data-item:last-child{
+  margin-bottom: 0;
+}
+.leaderboard-heading{
+  border-bottom: 1px solid #DAE4E8;
+  /* margin-bottom: 1.1rem; */
+  color: #b9b9b9;
+  background: #fff;
+  padding: 1rem 1rem 0;
+}
+.leaderboard-list{
+  /* border: 1px solid #DAE1E8; */
+  border-top: none;
+  /* padding: 2rem 2.5rem; */
+  padding: 0 10px 10px 10px;
+  background: #DAE1E8;
+}
+.leaderboard-me{
+  background: #24ad9e;
+  display: flex;
+  justify-content: space-between;
+  border-right: 9px solid #DAE4E8;
+  border-left: 9px solid #DAE4E8;
+  flex-wrap: wrap;
+}
+.leaderboard-me h4{
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 0;
+  font-weight: 300;
+  margin: 0;
+  padding: 1.5rem 1rem;
+}
+.leaderboard-body{
+  background: #fff;
+  padding: 1rem;
+  color: #666;
+}
+.leaderboard-data-item p.name, 
+.leaderboard-data-item p.score, 
+.leaderboard-data-item p.rank{
+  font-size: 1.1rem;
+}
+.game-complete{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.9;
+  min-width: 100%;
+}
+.game-complete h1,
+.game-complete p{
+  color: #fff;
+  font-weight: 300;
+  margin: 0;
+  align-self: center;
+}
+.game-complete h1{
+  font-size: 2.6rem;
+  padding: 1rem 2rem 1.1rem;
+}
+.game-complete p{
+  font-size: 2.1rem;
+  padding: .9rem 2rem;
+}
+.game-complete p:last-child{
+  margin-top: 1.15rem;
+}
+.photo,
+.name,
+.score,
+.rank{
+  align-self: center;
+}
+.photo{
+  flex: 1 0;
+}
+.name{
+  flex: 1 33.5%;
+}
+.score{
+  flex: 1 5%;
+}
+.rank{
+  flex: 1 0;
+}
+
+
+
+/***** MEDIA QUERIES *****/
+@media screen and (min-width: 769px){
+  .game-section,
+  .play-section  {
+    flex: 0 0 100%;
+    max-width: 57.333333%;
+    position: relative;
+  }
+  .play-section  {
+    max-width: 57.333333%;
+  }
+  .play-section .game-section  {
+    max-width: 100%;
+  }
+  .leaderboard-section  {
+    flex: 0 0 40.666667%;
+    max-width: 40.666667%;
+    position: relative;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .game  {
+    /*padding: 0 .4rem;*/
+    /*flex: 0 0 33.333333333%;*/
+  }
+  .game:last-child  {
+    margin-bottom: 2.9rem;
+  }
+  .game-info  {
+  }
+}
+
+
+@media screen and (max-width: 640px)
+{
+  .PageContent.Games  {
+    width: 100%;
+    /*width: calc(100% - 2rem);*/
+  }  
+  .leaderboard-section  {
+    margin: 1.5rem 0 0;
+  }  
+  .answers  {
+    padding: 2.5rem 1rem 1.7rem;
+  }  
+  .answers h3
+  {
+    font-size: 1.7rem;
+    line-height: 2rem;
+  }  
+  .answer p
+  {
+    font-size: 1.25rem;
+    padding: 2rem 1.25rem;
+  }  
+  .current-q  {
+    left: calc(85% - 1rem);
+  }  
+  .game-complete h1  {
+    font-size: 2rem;
+  }
+  .game-complete p  {
+    font-size: 1.75rem;
+  }
+  .game-complete p:last-child  {
+    margin-top: 1.15rem;
+    text-align: center;
+  } 
+  .game-complete a
+  {
+    display: inline-block;
+  }  
+  .score-container h1  {
+    font-size: 2rem;
+    padding: 1rem 1rem;
+    /*width: 100%;*/
+  }
+  .back-to-list-btn  {
+    margin: 1rem 0 0 0;
+  }  
+  .back-to-list  {
+    flex: 0 0 50%;
+  }
+  .game-title-view  {
+    margin-bottom: 0;
+    /*height: 90px;*/
+  }  
+  .game .game-logo  {
+    /*max-width: 225px;*/
+    width: 100%;
+    margin: 0 0 1rem;
+  }
+  .game .game-logo img  {
+    width: 100%;
+  }  
+  .game-title h1  {
+    font-size: 2rem;
+    padding: 0;
+  }  
+  .row.gameTitle  {
+    justify-content: center;
+  }  
+  .game-title  {
+    display: none;
+  } 
+  .game-welcome, .play-section  {
+    min-height: 200px;
+  }  
+  .play-btn-large  {
+    margin-top: 0;
+  }  
+  .game
+  {
+    flex-wrap: wrap;
+  }  
+  .game-info .play-btn
+  {
+    margin-top: 1rem;
+  }  
+}
+
+@media screen and (max-width: 480px)
+{
+  
+}
+/***** END MEDIA QUERIES *****/
+
+

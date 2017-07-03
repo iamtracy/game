@@ -1,0 +1,301 @@
+<!--
+  {
+  ID: "Trivia",
+  GameDefTitle: "ReflowTrivia",
+  Editor:{
+    Help: "Trivia Help",
+    Defaults: function(){
+      var oDefaults = {
+        "BackgroundImageURL": "",
+        "cPrimary": "#3873A0",
+        "cSecondary": "#E8EDF1",
+        "cAction1": "#37B777",
+        "cText1":"#636363",
+        "cTertiary":"#FAFAFA",
+        "cText2":"#000000",
+        "cAction4": "#F05B5B",
+        "cAction5": "#24AD9E",
+        "GameQuestions": [] 
+      };
+      return oDefaults;
+    },
+    DefaultConstruct: function(){
+      var oObj = {
+        cPrimary: {Label: 'Primary Color', Name: 'EX_cPrimary'},
+        cSecondary: {Label: 'Background Color', Name: 'EX_cSecondary'},
+        cTertiary: {Label: 'Answer Background Color', Name: 'EX_cTertiary'},
+        cAccent1: {Label: '1st Accent Color', Name: 'EX_cAccent1'},
+        cAccent2: {Label: '2nd Accent Color', Name: 'EX_cAccent2'},
+        cAction1: {Label: 'Button Color', Name: 'EX_cAction1'},
+        cAction2: {Label: '2nd Action Color', Name: 'EX_cAction2'},
+        cAction3: {Label: '3rd Action Color', Name: 'EX_cAction3'},
+        cAction4: {Label: 'Wrong Answer Color', Name: 'EX_cAction4'},
+        cAction5: {Label: 'Correct Answer Color', Name: 'EX_cAction5'},
+        cNoAction: {Label: 'No Action Color', Name: 'EX_cNoAction'},
+        cPrimaryText: {Label: 'Primary Text Color', Name: 'EX_cPrimaryText'},
+        cText1: {Label: 'Question Font Color', Name: 'EX_cText1'},
+        cText2: {Label: 'Answer Font Color', Name: 'EX_cText2'}
+      }
+      return oObj;
+    },
+    Build: function(oData, cGameID){
+      if (xDOM.isEmptyObject(oData))
+        oData = this.Defaults();
+      
+      xDOM(g_oContainer).addClass("TriviaOptions");
+      ge_CreateInfoSection(this.Help, null, "margin-left-10");
+      
+      g_oContainer = xDOM("<div>")
+        .addClass("InnerLeftBox")
+        .appendToElem(xDOM.AddHash(cGameID)+" .TriviaOptions")
+        .returnElement();
+
+      xpr_StartOptionSection("Trivia Style Options");
+        ge_CreateImageURLControl("Background Image URL", "EX_BackgroundImageURL", 80, 300, oData.BackgroundImageURL, null);
+        
+        var oContainer = g_oContainer;
+        var oColor = ColorEditorObject({
+          ID: cGameID,
+          Title: "",
+          Class: "",
+          Construct: this.DefaultConstruct()
+        }).setData(xDOM.cloneObject({}, oData)).setContainer(oContainer).Build();
+      xpr_EndOptionSection();
+      
+      g_oContainer = xDOM(xDOM.AddHash(cGameID)+" .TriviaOptions").returnElement();
+      
+      // add validation
+
+      g_oContainer = xDOM("<div>")
+        .addClass("InnerRightBox clear")
+        .appendToElem(xDOM.AddHash(cGameID)+" .TriviaOptions")
+        .returnElement();
+
+      xpr_StartOptionSection("Trivia Question Options");
+        xDOM("<div>")
+          .addClass("BuildArea Questions")
+          .appendToElem(g_oContainer);
+
+        xDOM("<div>")
+          .addClass("Button AddNew")
+          .HTML("Add New Question")
+          .appendToElem(g_oContainer)
+          .addEvent("click", this.Add.bind(this));
+      xpr_EndOptionSection();
+
+      var aData = oData.GameQuestions;
+      for (var i = 0, ii = aData.length; i < ii; i++){
+        this.Create(i, aData[i]);
+      }
+
+      g_oContainer = xDOM(".Questions").returnElement();
+    },
+    Add: function(evt){
+      var index = xDOM('.Question').count();
+
+      if (this.AutoApply(evt)){
+        this.Create(index, {}, true);
+      }
+    },
+    Create: function(index, oData, bNew){
+      if (xDOM.isEmptyObject(oData)){
+        oData = {Question: 'New Question', Answer1: 'Answer 1', Answer2: 'Answer 2', Answer3: 'Answer 3', Answer4: 'Answer 4', Correct: 'Answer 1'};
+      }
+
+      if (bNew)
+        xDOM(".Question").replaceClass("Open", "Closed");
+
+      g_oContainer = xDOM("<div>")
+        .setAttr({"id": "Question"+index, "data-index": index})
+        .addClass("Question ItemHolder "+ ((bNew) ? "Open": "Closed"))
+        .appendToElem(".BuildArea.Questions")
+        .returnElement();
+
+      xDOM("<span>")
+        .HTML(index)
+        .setClass("ListNumber Text")
+        .appendToElem("#Question"+index);
+
+      xDOM("<span>")
+        .setClass("QuestionTitle Title Text")
+        .appendToElem("#Question"+index)
+        .HTML(oData.Question);
+
+      xDOM("<div>")
+        .HTML("Modify")
+        .setClass("Button Modify")
+        .addEvent("click", this.Modify.bind(this))
+        .appendToElem("#Question"+index);
+
+      xDOM("<div>")
+        .HTML("Apply")
+        .setClass("Button Apply")
+        .addEvent("click", this.Apply.bind(this))
+        .appendToElem("#Question"+index);
+
+      xDOM("<div>")
+        .HTML("Delete")
+        .setClass("Button Delete")
+        .addEvent("click", this.Delete.bind(this))
+        .appendToElem("#Question"+index);
+      
+      ge_CreateTextControl("Game Question", "EX_GameQuestion", 65, 80, oData.Question, null);
+      xpr_CreateLabel("Answers");
+      this.CreateAnswerSet('EX_GameAnswer1', index, 1, oData.Answer1, oData.Correct);
+      this.CreateAnswerSet('EX_GameAnswer2', index, 2, oData.Answer2, oData.Correct);
+      this.CreateAnswerSet('EX_GameAnswer3', index, 3, oData.Answer3, oData.Correct);
+      this.CreateAnswerSet('EX_GameAnswer4', index, 4, oData.Answer4, oData.Correct);
+
+      
+
+      ge_ValidateTextFields("Question"+index);
+    },
+    CreateAnswerSet: function(cName, iIndex, iCheckVal, cInitVal, cCorrect){
+      var oContainer = g_oContainer;
+      g_oContainer = xDOM("<div>").CSS('margin', "10px 0").appendToElem(g_oContainer).returnElement();
+      var oInput = ge_CreateTextControl("", cName, 40, 80, cInitVal, null);
+      xDOM(oInput.parentNode).getPrevious().removeFromElem();
+      g_oContainer = oInput.parentNode;
+      
+      if (window.atob)
+        cCorrect = window.atob(cCorrect);
+
+      var oCheck = ge_CreateSingleRadio(null,'EX_GameCorrect'+iIndex, iCheckVal, (cCorrect == cInitVal ? true : false));
+      xDOM(oCheck.parentNode).CSS('float', 'left').addClass('clear');
+      g_oContainer = oContainer;
+    },
+    AutoApply: function (){
+      if (xDOM(".Question.Open").count()){
+        // DebugMessage("Auto Apply", true);
+        var iEditorKey = xDOM(".Row.Open").getAttr("data-editor-key");        
+        return this.Apply(null, iEditorKey, xDOM(".Question.Open").returnElement());
+      }
+      return true;
+    },
+    Modify: function(evt){
+      if (evt){   
+        var oEvent = new EventObj(evt),
+          oElem = xDOM.FindElem(oEvent.srcElement, "data-index");
+        
+        if (this.AutoApply(evt)){
+          xDOM(".Question").replaceClass("Open", "Closed");
+          xDOM(oElem).replaceClass("Closed", "Open");
+        }
+      }
+    },
+    Apply: function(evt, iEditorKey, oElem){
+      if (evt){   
+        var oEvent = new EventObj(evt);
+
+        oElem = xDOM.FindElem(oEvent.srcElement, "data-index");
+        var oEditorElem = xDOM.FindElem(oElem, "data-editor-key");        
+        iEditorKey = xDOM(oEditorElem).getAttr("data-editor-key");
+      }
+
+      if (!this.ValidateQuestion())
+        return 0;
+
+      this.ClearError(iEditorKey);
+      xpr_SetModified();
+      xDOM(oElem).replaceClass("Open", "Closed");
+      xDOM(oElem).find('.Title.QuestionTitle').HTML(xDOM(oElem).find('#EX_GameQuestion').Val());      
+    },    
+    ValidateQuestion: function (){
+      var bRetval = 1;
+      var oElem = xDOM(".Question.Open").returnElement();
+      var oAnswer = xDOM(oElem).find('input[type="radio"]:checked');
+            
+      if (oElem){
+        if (!xDOM(oElem).find("#EX_GameQuestion").Val()){
+          this.InError(xDOM(oElem).find("#EX_GameQuestion"), "A question is required.", "QuestionError");
+          bRetval = 0;
+        }
+        if (oAnswer.count() == 0) {
+          this.InError(xDOM(oElem).find("#EX_GameQuestion"), "A correct answer is required.", "QuestionError");
+          bRetval = 0;
+        }
+      }
+      return bRetval;
+    },
+    Validate: function (oEditorElem){
+      var bRetval = 1;
+      var oElem = xDOM(oEditorElem).find(".TriviaOptions").returnElement();
+      
+      if (oElem){
+        if (xDOM(oElem).find("#EX_BackgroundImageURL").Val() && !xDOM.IsImage(xDOM(oElem).find("#EX_BackgroundImageURL").Val())){
+          this.InError(xDOM(oElem).find("#EX_BackgroundImageURL"), "The URL entered is not a Image. Please enter a new URL.", "ImageError");
+          bRetval = 0;
+        }
+
+        if (xDOM(oElem).find(".Question").count() < 10){
+          this.InError(xDOM(oElem).find(".Questions"), "At least 10 questions are required.", "QuestionError");
+          bRetval = 0;
+        }
+
+        if (!this.ValidateQuestion())
+          bRetval = 0;
+      }
+      return bRetval;
+    },
+    Delete: function(evt){
+      if (evt){   
+        var oEvent = new EventObj(evt),
+          oElem = xDOM.FindElem(oEvent.srcElement, "data-index"),
+          iIndex = xDOM(oElem).getAttr("data-index");
+      }
+
+      xpr_SetModified();
+      xDOM("#Question"+iIndex).removeFromElem();
+      xDOM(".Question").each(function(index, oLocalElem){
+        xDOM(oLocalElem).setAttr({"data-index": index, "id": "Question"+index});
+        xDOM(oLocalElem).find('.ListNumber').HTML(index.toString())
+      });
+    },
+    Save: function(oElem){
+      var cGameID = 'Game'+xDOM(oElem).getAttr("data-editor-key");
+      var oObj = ColorEditorObject(cGameID).Save();
+      oObj.BackgroundImageURL = xDOM(oElem).find("#EX_BackgroundImageURL").Val();
+      oObj.GameQuestions = [];
+
+      xDOM(oElem).find('.Question').each(function(index, oLocalElem){
+        var oTemp = {};
+        oTemp.Question = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameQuestion").Val());
+        oTemp.Answer1 = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameAnswer1").Val());
+        oTemp.Answer2 = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameAnswer2").Val());
+        oTemp.Answer3 = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameAnswer3").Val());
+        oTemp.Answer4 = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameAnswer4").Val());
+        var iChecked = xDOM(oLocalElem).find("input[type='radio']:checked").Val();
+        var cCorrect = ge_ScrubText(xDOM(oLocalElem).find("#EX_GameAnswer"+iChecked).Val());
+        if (window.btoa)
+          cCorrect = window.btoa(cCorrect);
+
+        oTemp.Correct = cCorrect;
+        oObj.GameQuestions.push(oTemp);
+      });
+      return oObj;
+    }
+  },
+  Display:{
+    Files: [{"type": "js", "url": "https://"+g_cContentServerAddress+"/customvts/VXP/Reflow/Games/js/GamesTrivia.js"}]
+  }
+};
+-->
+<BODY>
+<div style="display: none;">
+  <div id="GameMasterNode" class="game-section">
+    <div class="score-container bgc-Primary">
+      <h1>Time Bonus: <span id="timer">0</span></h1>
+      <h1>Score: <span id="score">0</span></h1>
+    </div>
+    <div class="question-container bgc-Secondary"></div>
+  </div>
+
+  <div id="GameMasterNodeQuestion" class="answers" data-question-key="{QuestionKey}">
+    <h3 class="tc-Text1">{Question}</h3>
+    <div class="answer"></div>
+    <div class="current-q-index"><p class="back-to-list">&#9666;Back to List</p><p class="current-q">0/10</p></div>
+  </div>
+
+  <p id="GameMasterNodeAnswer" class="answer-click bc-Primary tc-Text2 bgc-Tertiary bc-Action4 bc-Action5" data-guessval="{Answer}">{Answer}</p>
+</div>
+</BODY>
